@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
 
 
     MainWindow w(nullptr, &client);
-
-    clientThread.start();
+    client.initConnection();
+    //clientThread.start();
 
     // Show the MainWindow
     w.show();
@@ -43,7 +43,8 @@ int main(int argc, char *argv[]) {
     // Run the application event loop
     const int result = a.exec();
 
-    clientThread.wait();
+
+    //clientThread.wait();
 
 
     return result;

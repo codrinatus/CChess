@@ -10,12 +10,14 @@
 class UiMainWindow; // Forward declaration
 
 
-class ClientHandler {
+class ClientHandler : public QObject {
+    Q_OBJECT
 private:
     int sd;  // Socket descriptor
     int port = 2728;
     bool running;
     struct sockaddr_in server{};    // structura folosita pentru conectare
+
 
 
 
@@ -29,12 +31,20 @@ public:
     void sendMessage(const char *msg);
 
     void receiveMessage(char msg[]);
+    void receiveMessage(char msg[],int size);
+    char msg[100];
+    int initConnection();
+
+
+
+
+signals:
+    void messageReceived(const char* msg);
 
 
 
 
 private:
-    int initConnection();
 
 
 

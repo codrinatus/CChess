@@ -15,13 +15,13 @@ void ClientHandler::run() {
     if (initConnection() == 0) {
         running = true;
         while (running) {
-            char msg[100];
-            bzero(msg, 100);
+            //bzero(msg, 100);
             fflush(stdout);
-            read(0, msg, sizeof(msg));
+            //read(0, msg, sizeof(msg));
 
             //sendMessage(msg);
-            //receiveMessage();
+            receiveMessage(msg);
+            qDebug () << "read din while: " << msg;
 
             //cout << "[client]Mesajul primit este: " << msg << endl;
             if (strcmp(msg, "Serverul a primit cererea de disconnect") == 0)
@@ -47,9 +47,10 @@ int ClientHandler::initConnection() {
     server.sin_addr.s_addr = htonl(INADDR_ANY);
     /* portul de conectare */
     server.sin_port = htons(port);
+    running = true;
 
     /* ne conectam la server */
-    if (connect(sd, (struct sockaddr *) &server, sizeof(struct sockaddr)) == -1) {
+    if (::connect(sd, (struct sockaddr *) &server, sizeof(struct sockaddr)) == -1) {
         perror("[client]Eroare la connect().\n");
         return errno;
     }
@@ -60,7 +61,6 @@ void ClientHandler::sendMessage(const char *msg) {
     if (running) {
         if (write(sd, msg, 100) <= 0) {
             perror("[client]Eroare la write() spre server.\n");
-            // Handle write error
         }
     } else perror("No running client");
 }
@@ -69,11 +69,28 @@ void ClientHandler::receiveMessage(char msg[]) {
     if(running) {
         strcpy(msg,"");
         bzero(msg,100);
-        if (read(sd, msg, 100) < 0) {
+        if (read(sd, msg, 100 ) < 0) {
         perror("[client]Eroare la read() de la server.\n");
-        // Handle read error
         }
-        else printf("[client]Am primit de la server: %s \n",msg);
+        else {
+            //emit messageReceived(msg);
+            printf("[client]Am primit de la server: %s \n",msg);
+        }
+    } else perror("No running client");
+}
+
+void ClientHandler::receiveMessage(char msg[],int size) {
+    if(running) {
+
+        strcpy(msg,"");
+        bzero(msg,100);
+        if (read(sd, msg, size ) < 0) {
+            perror("[client]Eroare la read() de la server.\n");
+        }
+        else {
+            //emit messageReceived(msg);
+            printf("[client]Am primit de la server: %s \n",msg);
+        }
     } else perror("No running client");
 }
 

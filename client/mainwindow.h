@@ -4,6 +4,11 @@
 #include "chesslabel.h"
 #include "qstackedwidget.h"
 #include <QMainWindow>
+#include <QTimer>
+
+struct Pos{
+    int fromX,fromY,toX,toY;
+};
 
 class ClientHandler; // Forward declaration
 
@@ -27,22 +32,35 @@ private slots:
     void on_exitButton_released();
 
     void on_playButton_released();
-
-    void on_MainWindow_destroyed();
+    void handleTimer();
     void onChessPieceClicked(ChessLabel *clickedLabel);
     void boardGenerator(char color[]);
+    void MoveConverterB(const char* msg);
+    void MoveConverterW(const char* msg);
+    void BlackBoard();
+    void WhiteBoard();
+    bool eventFilter(QObject *obj, QEvent *event);
+
+
 private:
     Ui::MainWindow *ui;
     ClientHandler *client;
     QStackedWidget *stackedWidget;
     char msg[500];
-    char msg2[500];
+    //char msg2[500];
     bool selected = false;
     QPixmap original;
+    QPixmap pix;
     ChessLabel *old;
     bool white = true;
     ChessLabel *chessLabels[8][8];
     bool turn;
+    Pos move;
+    bool time1=false;
+    bool time2=false;
+    bool time3=false;
+    bool time4=false;
+
 
 
 

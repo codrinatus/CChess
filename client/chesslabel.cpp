@@ -7,7 +7,6 @@ ChessLabel::ChessLabel(QWidget *parent, int row, int col)
 
 void ChessLabel::mousePressEvent(QMouseEvent *event)
 {
-    // Emit the signal when the label is clicked
     emit pieceClicked(this);
 }
 
