@@ -1,7 +1,6 @@
 #include "Pawn.h"
 
 bool Pawn::checkMove(int xfrom, int yfrom, int xto, int yto, Piece *board[8][8]) {
-    // se poate scapa de if color daca maresto oleaca conitia la of x - x =1
 
     cout << "Pawn check\n";
     if (color) {

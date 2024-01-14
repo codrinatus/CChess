@@ -8,15 +8,10 @@
 #include <random>
 
 Server::Server() : deconectare(false) {
-    // Create the server socket, setsockopt, bind, and listen
-    // ...
-
-    // Initialize other parameters if needed
 }
 
 Server::~Server() {
-    // Cleanup resources, e.g., close sockets
-    // ...
+
 }
 
 char *Server::conv_addr(sockaddr_in address) {
@@ -172,8 +167,9 @@ int Server::FindPartida(int fd) {
     return -1;
 }
 
-void Server::Qerase(vector<int> queue, int fd) {
-    queue.erase(remove(queue.begin(), queue.end(), fd), queue.end());
+void Server::Qerase(int f) {
+    queue.erase(remove(queue.begin(), queue.end(), f), queue.end());
+    cout << "am sters queue: " << queue[0] << endl;
 }
 
 void Server::Perase(vector<pair<int, int>> perechi, pair<int, int> p) {
@@ -183,11 +179,17 @@ void Server::Perase(vector<pair<int, int>> perechi, pair<int, int> p) {
 
 int Server::Suitable(int fd) {
     if (queue.empty()) {
+        cout << "not else" << endl;
         queue.push_back(fd);
         return -1;
-    } else if (Qcontains(fd))
+    } else if (Qcontains(fd)) {
+        cout << "else 1" << endl;
         return -1;
-    else return queue.front();
+
+    } else {
+        cout << "else 2" << endl;
+        return queue.front();
+    }
 
 }
 
@@ -204,22 +206,73 @@ bool checkcheck(int x, int y, Piece *board[8][8], bool color) {
     int diri[4] = {1, 1, -1, -1};
     int dirj[4] = {-1, 1, 1, -1};
 
-
-    for (int t = 0; t < 4; t++) {
-        int k = 1;
-
-        while (board[x + k * diri[t]][y + k * dirj[t]] == NULL && (x + k * diri[t] < 7 && x + k * diri[t] > 0) &&
-               (y + k * dirj[t] < 7 && y + k * dirj[t] > 0))
-            k++;
-        if ((x + k * diri[t] < 7 && x + k * diri[t] > 0) && (y + k * dirj[t] < 7 && y + k * dirj[t] > 0))
-            if (board[x + k * diri[t]][y + k * dirj[t]]->getColor() != color)
-                if (strcmp(typeid(board[x + k * diri[t]][y + k * dirj[t]]).name(), "Bishop") ||
-                    strcmp(typeid(board[x + k * diri[t]][y + k * dirj[t]]).name(), "Queen"))
-                    return false;
-    }
+    //4Rook
+    //6Knight
+    //6Bishop
+    //5Queen
+    //4King
+    //4Pawn
 
 
-    return true;
+//    for (int t = 0; t < 4; t++) {
+//        int k = 1;
+//
+//        while (board[x + k * diri[t]][y + k * dirj[t]] == NULL && (x + k * diri[t] < 7 && x + k * diri[t] > 0) &&
+//               (y + k * dirj[t] < 7 && y + k * dirj[t] > 0))
+//            k++;
+//        if ((x + k * diri[t] <= 7 && x + k * diri[t] >= 0) && (y + k * dirj[t] <= 7 && y + k * dirj[t] >= 0))
+//            if (board[x + k * diri[t]][y + k * dirj[t]]->getColor() != color)
+//                if (!strcmp(typeid(*board[x + k * diri[t]][y + k * dirj[t]]).name(), "6Bishop") ||
+//                    !strcmp(typeid(*board[x + k * diri[t]][y + k * dirj[t]]).name(), "5Queen"))
+//                    return true;
+//    }
+
+    for (int l = y - 1; l >= 0; l--)
+        if (board[x][l] != NULL) {
+            if (board[x][l]->getColor() != board[x][y]->getColor()) {
+                cout << "piesa din stanga: " << typeid(*board[x][l]).name() << endl;
+                if ((strcmp(typeid(*board[x][l]).name(), "4Rook") == 0) ||
+                    (strcmp(typeid(*board[x][l]).name(), "5Queen") == 0))
+                    return true;
+            }
+            break;
+        }
+
+    for (int l = y + 1; l <= 7; l++)
+        if (board[x][l] != NULL) {
+            if (board[x][l]->getColor() != board[x][y]->getColor()) {
+                cout << "piesa din stanga: " << typeid(*board[x][l]).name() << endl;
+                if ((strcmp(typeid(*board[x][l]).name(), "4Rook") == 0) ||
+                    (strcmp(typeid(*board[x][l]).name(), "5Queen") == 0))
+                    return true;
+            }
+            break;
+        }
+
+    for (int l = x - 1; l >= 0; l--)
+        if (board[l][y] != NULL) {
+            if (board[l][y]->getColor() != board[x][y]->getColor()) {
+                cout << "piesa din stanga: " << typeid(*board[l][y]).name() << endl;
+                if ((strcmp(typeid(*board[l][y]).name(), "4Rook") == 0) ||
+                    (strcmp(typeid(*board[l][y]).name(), "5Queen") == 0))
+                    return true;
+            }
+            break;
+        }
+
+    for (int l = x + 1; l <= 7; l++)
+        if (board[l][y] != NULL) {
+            if (board[l][y]->getColor() != board[x][y]->getColor()) {
+                cout << "piesa din stanga: " << typeid(*board[l][y]).name() << endl;
+                if ((strcmp(typeid(*board[l][y]).name(), "4Rook") == 0) ||
+                    (strcmp(typeid(*board[l][y]).name(), "5Queen") == 0))
+                    return true;
+            }
+            break;
+        }
+
+
+    return false;
 }
 
 void BoardFill(Piece *board[][8]) {
@@ -253,19 +306,20 @@ void BoardFill(Piece *board[][8]) {
 
 }
 
-void Server::SendTurn(int indexpartida){
-    if(partide[indexpartida].first){
-        write(partide[indexpartida].p.first,"turn",4);
-        write(partide[indexpartida].p.second,"asteapta",8);
+void Server::SendTurn(int indexpartida) {
+    cout << "before sendturn if: " << partide[indexpartida].p.first << endl;
+    cout << "before sendturn if: " << partide[indexpartida].p.second << endl;
+    if (partide[indexpartida].first) {
+        write(partide[indexpartida].p.first, "turn", 4);
+        write(partide[indexpartida].p.second, "asteapta", 8);
         partide[indexpartida].first = false;
-    }
-    else {
-        write(partide[indexpartida].p.second,"turn",4);
-        write(partide[indexpartida].p.first,"asteapta",8);
+    } else {
+        write(partide[indexpartida].p.second, "turn", 4);
+        write(partide[indexpartida].p.first, "asteapta", 8);
         partide[indexpartida].first = true;
 
     }
-
+    cout << "after sendturn if" << endl;
 
 
 }
@@ -280,12 +334,11 @@ void Server::Play(int fd) {
 
     } else {
         pair<int, int> pereche;
-        Qerase(queue, check);
+        Qerase(check);
         pereche.first = check;
         pereche.second = fd;
         BoardFill(partide[nrpartide].board);
         partide[nrpartide].p = pereche;
-        nrpartide++;
         perechi.push_back(pereche);
         printf("[server]Am imperecheat %d cu %d \n", check, fd);
         sprintf(msgrasp, "Vei juca cu %d", check);
@@ -304,13 +357,25 @@ void Server::Play(int fd) {
             write(check, "white", 5);
             write(fd, "black", 5);
             partide[nrpartide].first = true;
+            partide[nrpartide].whiteturn = true;
+            partide[nrpartide].regefirst.first = 7;
+            partide[nrpartide].regefirst.second = 4;
+            partide[nrpartide].regesecond.first = 0;
+            partide[nrpartide].regesecond.second = 4;
         } else {
             write(check, "black", 5);
             write(fd, "white", 5);
             partide[nrpartide].first = false;
-        }
-        //SendTurn(nrpartide);
+            partide[nrpartide].whiteturn = false;
+            partide[nrpartide].regefirst.first = 0;
+            partide[nrpartide].regefirst.second = 4;
+            partide[nrpartide].regesecond.first = 7;
+            partide[nrpartide].regesecond.second = 4;
 
+        }
+        cout << "before sendturn" << endl;
+        SendTurn(nrpartide);
+        nrpartide++;
 
 
     }
@@ -344,14 +409,11 @@ void Server::ParseCommand(int fd) {
             if (read(fd, msg, sizeof(buffer)) < 0) { //al doilea read pentru "miscare"
                 printf("[server] Eroare la read");
             };
-            printf("Primul print: %s\n", msg);
             move = MoveConverter(msg);
-            printf("A doilea: %d\n", move.fromX);
 
 
             bool isvalid = false;
             int match = FindPartida(fd);
-            cout << "nr partida: " << match << "\n";
 
             if (partide[match].board[move.fromX][move.fromY] != NULL)
                 isvalid = partide[match].board[move.fromX][move.fromY]->checkMove(move.fromX, move.fromY,
@@ -361,24 +423,111 @@ void Server::ParseCommand(int fd) {
 
             cout << "isvalid: " << isvalid << "\n";
 
+//            cout << "partide first: " << partide[match].first << endl;
+//            cout << "partide p first ==fd : " << (partide[match].p.first == fd) << endl;
+//            cout << "getcolor: " << partide[match].board[move.fromX][move.fromY]->getColor() << endl;
 
-            if (isvalid) {
+            if (!partide[match].first) { //first == 1 -> primul e negru
+                cout << "primul e alb" << endl;
+                if ((partide[match].p.first == fd) == partide[match].board[move.fromX][move.fromY]->getColor()) {
+                    isvalidcolor = true;
+                } else isvalidcolor = false;
+            } else {
+                if ((partide[match].p.first == fd) != partide[match].board[move.fromX][move.fromY]->getColor()) {
+                    isvalidcolor = true;
+                } else isvalidcolor = false;
+            }
+
+            cout << "isvalidcolor: " << isvalidcolor << endl;
+            bool isturn;
+
+            if (partide[match].whiteturn == (partide[match].p.first == fd))
+                isturn = true;
+            else isturn = false;
+
+
+            if (partide[match].board[move.fromX][move.fromY] != NULL) {
+                Piece *aux = partide[match].board[move.toX][move.toY];
+                partide[match].board[move.toX][move.toY] = partide[match].board[move.fromX][move.fromY];
+                partide[match].board[move.fromX][move.fromY] = NULL;
+                if (partide[match].p.first == fd) {
+                    if (strcmp(typeid(*partide[match].board[move.toX][move.toY]).name(), "4King") == 0) {
+                        if (checkcheck(move.toX, move.toY,
+                                       partide[match].board,
+                                       partide[match].board[move.toX][move.toY]->getColor())) {
+                            cout << "ischeck true" << endl;
+                        } else cout << "ischeck false" << endl;
+
+                    } else if (checkcheck(partide[match].regefirst.first, partide[match].regefirst.second,
+                                          partide[match].board,
+                                          partide[match].board[partide[match].regefirst.first][partide[match].regefirst.second]->getColor())) {
+                        cout << "ischeck true" << endl;
+                    } else cout << "ischeck false" << endl;
+                } else {
+                    if (strcmp(typeid(*partide[match].board[move.toX][move.toY]).name(), "4King") == 0) {
+                        if (checkcheck(move.toX, move.toY,
+                                       partide[match].board,
+                                       partide[match].board[move.toX][move.toY]->getColor())) {
+                            cout << "ischeck true" << endl;
+                        } else cout << "ischeck false" << endl;
+                    } else if (checkcheck(partide[match].regesecond.first, partide[match].regesecond.second,
+                                          partide[match].board,
+                                          partide[match].board[partide[match].regesecond.first][partide[match].regesecond.second]->getColor())) {
+                        cout << "ischeck true" << endl;
+                    } else cout << "ischeck false" << endl;
+                }
+                partide[match].board[move.fromX][move.fromY] = partide[match].board[move.toX][move.toY];
+                partide[match].board[move.toX][move.toY] = aux;
+
+            }
+
+
+            if (isvalid && isvalidcolor) {
                 partide[match].board[move.toX][move.toY] = partide[match].board[move.fromX][move.fromY]; // actualizare mutare
                 partide[match].board[move.fromX][move.fromY] = NULL; //golire pozitie precedenta
+                partide[match].whiteturn = !partide[match].whiteturn;
+                cout << "strcmp king: "
+                     << (strcmp(typeid(*partide[match].board[move.toX][move.toY]).name(), "4King") == 0) << endl;
+                if (strcmp(typeid(*partide[match].board[move.toX][move.toY]).name(), "4King") ==
+                    0) { //actualizare pozitie rege
+                    cout << "se actualizeaza rege" << endl;
+                    cout << "old regefirst first: " << partide[match].regefirst.first << " regefirst second: "
+                         << partide[match].regefirst.second << endl;
+                    cout << "old regesecond first: " << partide[match].regesecond.first << " regefirst second: "
+                         << partide[match].regesecond.second << endl;
+                    if (partide[match].p.first == fd) {
+                        partide[match].regefirst.first = move.toX;
+                        partide[match].regefirst.second = move.toY;
+
+                    } else {
+                        partide[match].regesecond.first = move.toX;
+                        partide[match].regesecond.second = move.toY;
+                    }
+                    cout << "new regefirst first: " << partide[match].regefirst.first << " regefirst second: "
+                         << partide[match].regefirst.second << endl;
+                    cout << "new regesecond first: " << partide[match].regesecond.first << " regefirst second: "
+                         << partide[match].regesecond.second << endl;
+                }
 
                 write(fd, "valid", 5);
+                if (partide[match].p.first == fd)
+                    write(partide[match].p.second, msg, 4);
+                else write(partide[match].p.first, msg, 4);
+
 
             } else write(fd, "invalid", 7);
 
             for (int i = 0; i < 8; i++) {
                 cout << "\n";
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < 8; j++) {
                     if (partide[match].board[i][j] == NULL)
                         cout << "NULL    ";
                     else cout << typeid(*partide[match].board[i][j]).name() << "  ";
-
+                }
             }
             cout << endl;
+
+
             //SendTurn(match);
 
 

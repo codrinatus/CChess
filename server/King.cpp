@@ -10,8 +10,6 @@ bool King::checkMove(int xfrom, int yfrom, int xto, int yto, Piece *board[8][8])
     }
     if (abs(yfrom - yto) <= 1 && abs(xfrom - xto) <= 1)
         return true;
-    // fara verificare de sah
-    // facem verificare dupa mutare si daca e sah dam revert si zicem invalid
 
     return false;
 }

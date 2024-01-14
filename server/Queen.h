@@ -3,13 +3,18 @@
 
 #include "Piece.h"
 
-class Queen: public Piece{
+class Queen : public Piece {
     using Piece::Piece;
+
+private:
+    bool diagonally(int xfrom, int yfrom, int xto, int yto, Piece *board[8][8]);
+
+    bool rowcol(int xfrom, int yfrom, int xto, int yto, Piece *board[8][8]);
+
 
 public:
 
     bool checkMove(int xfrom, int yfrom, int xto, int yto, Piece *board[8][8]);
-
 };
 
 

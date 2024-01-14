@@ -24,7 +24,10 @@ struct Pos{
 struct Partide{
     pair<int,int> p;
     Piece* board[8][8];
+    pair<int,int> regefirst;
+    pair<int,int> regesecond;
     bool first;
+    bool whiteturn;
 };
 
 class Server {
@@ -49,6 +52,7 @@ private:
     Pos move;
     int nrpartide=0;
     Partide partide[1000];
+    bool isvalidcolor;
 
 
 public:
@@ -66,7 +70,7 @@ public:
 
     bool Qcontains(int fd);
 
-    void Qerase(vector<int> queue,int fd);
+    void Qerase(int f);
 
     void Perase(vector<pair<int, int>> perechi, pair<int, int> p);
 
