@@ -5,15 +5,14 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include <iostream>
 
-class UiMainWindow; // Forward declaration
+class UiMainWindow;
 
 
 class ClientHandler : public QObject {
     Q_OBJECT
 private:
-    int sd;  // Socket descriptor
+    int sd;  // socket descriptor
     int port = 2728;
     bool running;
     struct sockaddr_in server{};    // structura folosita pentru conectare

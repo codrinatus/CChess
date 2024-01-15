@@ -26,7 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Client_GUI
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        chessroom.h chessroom.cpp chessroom.ui
+
         resources.qrc
 
         chesslabel.h chesslabel.cpp

@@ -115,11 +115,11 @@ selection-color: rgb(145, 65, 172);</string>
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
-     <widget class="QLabel" name="playMessage">
+     <widget class="QLabel" name="wontext">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>220</y>
+        <x>90</x>
+        <y>130</y>
         <width>431</width>
         <height>81</height>
        </rect>
@@ -135,7 +135,88 @@ background-color: rgb(145, 65, 172);
     padding: 10px;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>YOU WON !!!</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="return1button">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>380</y>
+        <width>291</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>221</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(38, 162, 105);
+selection-color: rgb(145, 65, 172);</string>
+      </property>
+      <property name="text">
+       <string>Return to main menu</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_3">
+     <widget class="QPushButton" name="return2button">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>390</y>
+        <width>291</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>221</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(38, 162, 105);
+selection-color: rgb(145, 65, 172);</string>
+      </property>
+      <property name="text">
+       <string>Return to main menu</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="losttext">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>130</y>
+        <width>431</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Arial&quot;;
+background-color: rgb(145, 65, 172);
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 10px;</string>
+      </property>
+      <property name="text">
+       <string>YOU LOST !!!</string>
       </property>
      </widget>
     </widget>

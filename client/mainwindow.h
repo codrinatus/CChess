@@ -5,6 +5,7 @@
 #include "qstackedwidget.h"
 #include <QMainWindow>
 #include <QTimer>
+#include <QProcess>
 
 struct Pos{
     int fromX,fromY,toX,toY;
@@ -41,6 +42,10 @@ private slots:
     void WhiteBoard();
     bool eventFilter(QObject *obj, QEvent *event);
 
+
+    void on_return2button_released();
+
+    void on_return1button_released();
 
 private:
     Ui::MainWindow *ui;
