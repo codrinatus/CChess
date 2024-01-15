@@ -7,7 +7,7 @@
 class Pawn : public Piece {
     using Piece::Piece;
 private:
-    bool moved; //pentru mscare 2 casute la inceput, trebuie adaugat in check
+    bool moved = false; //pentru miscare 2 casute la inceput, trebuie adaugat in check
 public:
 
     bool checkMove(int xfrom, int yfrom, int xto, int yto, Piece *board[8][8]);

@@ -58,7 +58,7 @@ private:
 public:
     Server();
     ~Server();
-    void startListening();
+    void start();
     void ExitClient();
     void ParseCommand(int fd);
     void sayHello(int fd);
@@ -72,7 +72,7 @@ public:
 
     void Qerase(int f);
 
-    void Perase(vector<pair<int, int>> perechi, pair<int, int> p);
+    void Perase(pair<int, int> p);
 
     const vector<pair<int, int>> &getPerechi() const;
 
